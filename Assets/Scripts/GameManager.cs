@@ -3,40 +3,34 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance; // Singleton para que se pueda acceder fácilmente desde otros scripts
-    public GameObject startPanel; // Referencia al panel de inicio
-    public GameObject gameOverPanel; // Referencia al panel de fin de partida
-    private bool gameStarted = false; // Para saber si el juego ya ha comenzado
+    public static GameManager Instance; // Singleton para acceso global
 
     private void Awake()
     {
-        if (Instance == null) Instance = this; // Se asegura que haya solo un GameManager
+        if (Instance == null) Instance = this;
     }
 
     private void Start()
     {
-        Time.timeScale = 0f; // Pausa el juego al iniciar
-        startPanel.SetActive(true); // Muestra el panel de inicio
-        gameOverPanel.SetActive(false); // Oculta el panel de Game Over
+        Time.timeScale = 1f; // Asegura que el juego comience en marcha
     }
 
+    // Este método puede usarse si en algún momento necesitas forzar el inicio
     public void StartGame()
     {
-        Time.timeScale = 1f; // Reanuda el juego
-        gameStarted = true;
-        startPanel.SetActive(false); // Oculta el panel de inicio
+        Time.timeScale = 1f;
     }
 
+    // Se llama cuando el jugador colisiona
     public void GameOver()
     {
-        Time.timeScale = 0f; // Pausa el juego
-        gameOverPanel.SetActive(true); // Muestra el panel de Game Over
+        // Reinicia automáticamente la escena actual al morir
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    // Método adicional si quieres reiniciar manualmente desde otro script
     public void RestartGame()
     {
-        // Reinicia la escena actual
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
-
